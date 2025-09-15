@@ -37,7 +37,7 @@ function BattlePage() {
     if (!isConnected || !battleId || !user?.id) return;
 
     const subscription = subscribe(`/topic/battle/${battleId}`, (newBattleState: BattleState) => {
-      setBattleState(newBattleState, user.id);
+      setBattleState(newBattleState, user.id ?? '');
     });
 
     return () => {

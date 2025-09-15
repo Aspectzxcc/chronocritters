@@ -1,10 +1,7 @@
 import type { TrainerInfoProps } from "@features/profile/types";
 
-// mock data for fields unimplemented in backend
 const mockTrainerData = {
   title: "Gold Trainer",
-  level: 15,
-  experience: 2450,
 };
 
 export function TrainerInfo({ username, experience, level }: TrainerInfoProps) {
