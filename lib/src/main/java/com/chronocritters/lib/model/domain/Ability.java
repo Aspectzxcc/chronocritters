@@ -8,6 +8,7 @@ import com.chronocritters.lib.interfaces.effects.IInstantEffect;
 import com.chronocritters.lib.interfaces.effects.IPersistentEffect;
 import com.chronocritters.lib.model.battle.BattleState;
 
+import io.leangen.graphql.annotations.GraphQLId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -18,6 +19,7 @@ import lombok.Data;
 @Document(collection = "abilities")
 public class Ability {
     @NotBlank(message = "Ability ID cannot be blank")
+    @GraphQLId
     private String id;
 
     @NotBlank(message = "Ability name cannot be blank")

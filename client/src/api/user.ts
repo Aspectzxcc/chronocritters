@@ -2,15 +2,15 @@ import client from './apollo';
 import type { LoginCredentials, RegisterCredentials } from '@store/auth/types';
 import { gql } from '@apollo/client';
 
-import type { 
+import type {
   GetBattleHistoryEntryQuery,
   GetBattleHistoryQuery,
-  GetMyCrittersQuery, 
-  GetPlayerOverviewQuery, 
-  GetPlayerResultsQuery, 
-  GetPlayerStatsQuery, 
-  LoginMutation, 
-  RegisterMutation 
+  GetMyCrittersQuery,
+  GetPlayerOverviewQuery,
+  GetPlayerResultsQuery,
+  GetPlayerStatsQuery,
+  LoginMutation,
+  RegisterMutation
 } from '@/gql/graphql';
 
 const LOGIN_MUTATION = gql(`
@@ -58,7 +58,7 @@ export const register = (credentials: RegisterCredentials) => {
 };
 
 const GET_PLAYER_STATS_QUERY = gql(`
-  query GetPlayerStats($id: ID!) {
+  query GetPlayerStats($id: String!) {
     getPlayer(id: $id) {
       stats {
         wins
@@ -78,7 +78,7 @@ export const getPlayerStats = async (userId: string) => {
 };
 
 const GET_PLAYER_OVERVIEW_QUERY = gql(`
-  query GetPlayerOverview($id: ID!) {
+  query GetPlayerOverview($id: String!) {
     getPlayer(id: $id) {
       id
       username
@@ -111,7 +111,7 @@ export const getPlayerOverview = async (userId: string) => {
 };
 
 const GET_MY_CRITTERS_QUERY = gql(`
-  query GetMyCritters($id: ID!) {
+  query GetMyCritters($id: String!) {
     getPlayer(id: $id) {
       roster {
         id
@@ -164,7 +164,7 @@ export const getMyCritters = async (userId: string) => {
 };
 
 const GET_PLAYER_RESULTS_QUERY = gql(`
-  query GetPlayerResults($id: ID!) {
+  query GetPlayerResults($id: String!) {
     getPlayer(id: $id) {
       username
       stats {
@@ -178,8 +178,8 @@ const GET_PLAYER_RESULTS_QUERY = gql(`
         baseStats {
           level
           experience
-          expToNextLevel          
-        }        
+          expToNextLevel
+        }
       }
     }
   }
@@ -195,7 +195,7 @@ export const getPlayerResults = async (userId: string) => {
 };
 
 const BATTLE_HISTORY_QUERY = gql(`
-  query GetBattleHistory($id: ID!) {
+  query GetBattleHistory($id: String!) {
     getPlayer(id: $id) {
       matchHistory {
         battleId

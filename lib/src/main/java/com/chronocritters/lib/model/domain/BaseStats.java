@@ -1,5 +1,8 @@
 package com.chronocritters.lib.model.domain;
 
+import com.chronocritters.lib.util.ExperienceUtil;
+
+import io.leangen.graphql.annotations.GraphQLQuery;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +29,9 @@ public class BaseStats {
 
     @Default 
     private long experience = 0;
+
+    @GraphQLQuery(name = "expToNextLevel")
+    public Long getExpToNextLevel() {
+        return ExperienceUtil.getRequiredExpForPlayerLevel(this.level + 1);
+    }
 }

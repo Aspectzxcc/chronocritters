@@ -9,10 +9,14 @@ import com.chronocritters.lib.model.domain.MatchHistoryEntry;
 import com.chronocritters.lib.model.domain.Player;
 import com.chronocritters.user.player.repository.PlayerRepository;
 
+import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@GraphQLApi
 public class PlayerService {
     private final PlayerRepository playerRepository;
 
@@ -20,7 +24,8 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    public Player findById(String id) {
+    @GraphQLQuery(name = "getPlayer")
+    public Player findById(@GraphQLArgument(name = "id") String id) {
         return playerRepository.findById(id).orElse(null);
     }
 
@@ -32,7 +37,11 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public MatchHistoryEntry getMatchHistoryEntry(String playerId, String battleId) {
+    @GraphQLQuery(name = "getMatchHistoryEntry")
+    public MatchHistoryEntry getMatchHistoryEntry(
+        @GraphQLArgument(name = "playerId") String playerId,
+        @GraphQLArgument(name = "battleId") String battleId
+    ) {
         Optional<Player> player = playerRepository.findMatchHistoryEntryByPlayerIdAndBattleId(playerId, battleId);
         if (player.isPresent() && player.get().getMatchHistory() != null && !player.get().getMatchHistory().isEmpty()) {
             return player.get().getMatchHistory().get(0); // only one entry should match

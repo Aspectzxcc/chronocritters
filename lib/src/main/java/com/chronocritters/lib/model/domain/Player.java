@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import io.leangen.graphql.annotations.GraphQLId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,7 @@ import lombok.Builder.Default;
 @Builder
 @Document(collection = "players")
 public class Player {
+    @GraphQLId
     private String id;
     
     @NotBlank(message = "Username cannot be blank")

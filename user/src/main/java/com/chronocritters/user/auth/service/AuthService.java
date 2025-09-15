@@ -9,14 +9,22 @@ import com.chronocritters.user.auth.dto.LoginResponse;
 import com.chronocritters.user.auth.dto.User;
 import com.chronocritters.user.player.repository.PlayerRepository;
 
+import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLMutation;
+import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@GraphQLApi
 public class AuthService {
     private final PlayerRepository playerRepository;
 
-    public LoginResponse register(String username, String password) {
+    @GraphQLMutation(name = "register")
+    public LoginResponse register(
+        @GraphQLArgument(name = "username") String username,
+        @GraphQLArgument(name = "password") String password
+    ) {
         if (playerRepository.findByUsername(username.trim()).isPresent()) throw new IllegalArgumentException("Username already taken");
 
         Player player = new Player();
@@ -32,7 +40,11 @@ public class AuthService {
         return loginResponse;
     }
 
-    public LoginResponse login(String username, String password) {
+    @GraphQLMutation(name = "login")
+    public LoginResponse login(
+        @GraphQLArgument(name = "username") String username,
+        @GraphQLArgument(name = "password") String password
+    ) {
         Player player = playerRepository.findByUsername(username.trim())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
 
