@@ -52,7 +52,7 @@ public class MatchmakingController {
             gameLogicWebClient.createBattle(foundMatch.battleId(), foundMatch.playerOneId(), foundMatch.playerTwoId())
                 .then(gameLogicWebClient.getBattleState(foundMatch.battleId()))
                 .doOnSuccess(battleTimerService::startOrResetTimer)
-                .block();
+                .subscribe();
             
             messagingTemplate.convertAndSendToUser(
                     foundMatch.playerOneId(),
