@@ -7,5 +7,6 @@ public enum CritterType {
     ELECTRIC, 
     METAL,
     TOXIC,
-    KINETIC
+    KINETIC,
+    UNKNOWN
 }

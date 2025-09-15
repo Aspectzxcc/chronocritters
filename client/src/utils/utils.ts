@@ -1,7 +1,6 @@
 import { MatchMakingStatus } from "@features/menu/types";
 import { ConnectionStatus } from "@store/lobby/types";
-import { CritterType, type EffectUnion } from "@/gql/graphql";
-
+import { CritterType, type Effect } from "@/gql/graphql";
 export const critterTypeIcons: Record<CritterType, string> = {
   [CritterType.Fire]: '🔥',
   [CritterType.Water]: '💧',
@@ -51,7 +50,7 @@ const effectTypeStyles: Record<string, string> = {
   UnknownEffect: 'bg-gray-100 text-gray-800 border-gray-300',
 };
 
-export const getEffectStyle = (effect: EffectUnion | null | undefined): string => {
+export const getEffectStyle = (effect: (Effect & { __typename?: string }) | null | undefined): string => {
   if (!effect || !effect.__typename) return effectTypeStyles.UnknownEffect;
   return effectTypeStyles[effect.__typename] ?? effectTypeStyles.UnknownEffect;
 };

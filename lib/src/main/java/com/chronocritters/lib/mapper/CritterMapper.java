@@ -96,7 +96,7 @@ public final class CritterMapper {
             case METAL -> CritterType.METAL;
             case TOXIC -> CritterType.TOXIC;
             case KINETIC -> CritterType.KINETIC;
-            default -> throw new IllegalArgumentException("Unknown critter type: " + proto);
+            case CRITTER_TYPE_UNSPECIFIED, UNRECOGNIZED -> CritterType.UNKNOWN;
         };
     }
 
@@ -109,6 +109,7 @@ public final class CritterMapper {
             case METAL -> CritterTypeProto.METAL;
             case TOXIC -> CritterTypeProto.TOXIC;
             case KINETIC -> CritterTypeProto.KINETIC;
+            case UNKNOWN -> CritterTypeProto.CRITTER_TYPE_UNSPECIFIED;
         };
     }
 }

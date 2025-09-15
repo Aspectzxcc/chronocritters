@@ -51,6 +51,7 @@ export enum CritterType {
   Kinetic = 'KINETIC',
   Metal = 'METAL',
   Toxic = 'TOXIC',
+  Unknown = 'UNKNOWN',
   Water = 'WATER'
 }
 
