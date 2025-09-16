@@ -10,8 +10,6 @@ import com.chronocritters.lib.model.domain.Player;
 
 @Repository
 public interface PlayerRepository extends MongoRepository<Player, String> {
-    Optional<Player> findByUsername(String username);
-
     @Query(value = "{ '_id': ?0, 'matchHistory.battleId': ?1 }", fields = "{ 'matchHistory.$': 1 }")
     Optional<Player> findMatchHistoryEntryByPlayerIdAndBattleId(String playerId, String battleId);
 }

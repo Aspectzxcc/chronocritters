@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.chronocritters.lib.model.domain.MatchHistoryEntry;
 import com.chronocritters.lib.model.domain.Player;
+import com.chronocritters.lib.model.domain.User;
 import com.chronocritters.user.player.repository.PlayerRepository;
+import com.chronocritters.user.player.repository.UserRepository;
 
 import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @GraphQLApi
 public class PlayerService {
     private final PlayerRepository playerRepository;
+    private final UserRepository userRepository;
 
     public List<Player> findAll() {
         return playerRepository.findAll();
@@ -35,6 +39,13 @@ public class PlayerService {
 
     public void deleteById(String id) {
         playerRepository.deleteById(id);
+    }
+
+    @GraphQLQuery(name = "username")
+    public String getUsername(@GraphQLContext Player player) {
+        return userRepository.findById(player.getUserId())
+                .map(User::getUsername)
+                .orElse("Unknown User");
     }
 
     @GraphQLQuery(name = "getMatchHistoryEntry")

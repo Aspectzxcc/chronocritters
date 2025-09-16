@@ -12,6 +12,8 @@ export function OverviewTab() {
   const level = loaderData?.getPlayer?.stats?.level ?? 0;
   const experience = loaderData?.getPlayer?.stats?.experience ?? 0;
 
+  console.log('Loader Data:', loaderData);
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

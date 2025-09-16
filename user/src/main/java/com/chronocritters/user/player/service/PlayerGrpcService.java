@@ -12,6 +12,7 @@ import com.chronocritters.lib.model.battle.BattleStats;
 import com.chronocritters.lib.model.domain.Critter;
 import com.chronocritters.lib.model.domain.MatchHistoryEntry;
 import com.chronocritters.lib.model.domain.Player;
+import com.chronocritters.lib.model.domain.User;
 import com.chronocritters.lib.util.ExperienceUtil;
 import com.chronocritters.proto.player.PlayerProto.BattleRewardsRequest;
 import com.chronocritters.proto.player.PlayerProto.BattleRewardsResponse;
@@ -21,6 +22,7 @@ import com.chronocritters.proto.player.PlayerProto.MatchHistoryResponse;
 import com.chronocritters.proto.player.PlayerProto.PlayerRequest;
 import com.chronocritters.proto.player.PlayerProto.PlayerResponse;
 import com.chronocritters.proto.player.PlayerServiceGrpc.PlayerServiceImplBase;
+import com.chronocritters.user.player.repository.UserRepository;
 
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @RequiredArgsConstructor
 public class PlayerGrpcService extends PlayerServiceImplBase {
     private final PlayerService playerService;
+    private final UserRepository userRepository;
 
     @Override
     public void getPlayer(PlayerRequest request, StreamObserver<PlayerResponse> responseObserver) {
@@ -42,9 +45,15 @@ public class PlayerGrpcService extends PlayerServiceImplBase {
                 return;
             }
 
+            User user = userRepository.findById(player.getUserId()).orElse(null);
+            if (user == null) {
+                responseObserver.onError(new RuntimeException("User not found with ID: " + player.getUserId()));
+                return;
+            }
+
             PlayerResponse.Builder responseBuilder = PlayerResponse.newBuilder()
                     .setId(player.getId())
-                    .setUsername(player.getUsername());
+                    .setUsername(user.getUsername());
 
             // Convert roster to proto format
             if (player.getRoster() != null) {
@@ -111,11 +120,19 @@ public class PlayerGrpcService extends PlayerServiceImplBase {
 
             BattleStats battleStats = BattleStatsMapper.toModel(request.getBattleStats());
 
+            User winningUser = userRepository.findById(winningPlayer.getUserId()).orElse(null);
+            User losingUser = userRepository.findById(losingPlayer.getUserId()).orElse(null);
+
+            if (winningUser == null || losingUser == null) {
+                responseObserver.onError(new RuntimeException("User not found"));
+                return;
+            }
+
             MatchHistoryEntry winnerHistoryEntry = MatchHistoryEntry.builder()
                     .battleId(battleId)
                     .winnerId(winnerId)
                     .loserId(loserId)
-                    .opponentUsername(losingPlayer.getUsername())
+                    .opponentUsername(losingUser.getUsername())
                     .timestamp(Instant.now())
                     .usedCrittersNames(winnerCritterNames)
                     .opponentCrittersNames(loserCritterNames)
@@ -130,7 +147,7 @@ public class PlayerGrpcService extends PlayerServiceImplBase {
                     .battleId(battleId)
                     .winnerId(winnerId)
                     .loserId(loserId)
-                    .opponentUsername(winningPlayer.getUsername())
+                    .opponentUsername(winningUser.getUsername())
                     .timestamp(Instant.now())
                     .usedCrittersNames(loserCritterNames)
                     .opponentCrittersNames(winnerCritterNames)

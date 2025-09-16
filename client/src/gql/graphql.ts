@@ -131,10 +131,10 @@ export type Player = {
   __typename?: 'Player';
   id?: Maybe<Scalars['ID']['output']>;
   matchHistory?: Maybe<Array<Maybe<MatchHistoryEntry>>>;
-  password: Scalars['String']['output'];
   roster: Array<Maybe<Critter>>;
   stats: PlayerStats;
-  username: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+  username?: Maybe<Scalars['String']['output']>;
 };
 
 export type PlayerStats = {
@@ -216,7 +216,7 @@ export type GetPlayerOverviewQueryVariables = Exact<{
 }>;
 
 
-export type GetPlayerOverviewQuery = { __typename?: 'Query', getPlayer?: { __typename?: 'Player', id?: string | null, username: string, stats: { __typename?: 'PlayerStats', wins: number, losses: number, level: number, experience: any, expToNextLevel?: any | null }, roster: Array<{ __typename?: 'Critter', name: string, description: string, type: CritterType, baseStats: { __typename?: 'BaseStats', level: number } } | null> } | null };
+export type GetPlayerOverviewQuery = { __typename?: 'Query', getPlayer?: { __typename?: 'Player', id?: string | null, username?: string | null, stats: { __typename?: 'PlayerStats', wins: number, losses: number, level: number, experience: any, expToNextLevel?: any | null }, roster: Array<{ __typename?: 'Critter', name: string, description: string, type: CritterType, baseStats: { __typename?: 'BaseStats', level: number } } | null> } | null };
 
 export type GetMyCrittersQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -234,7 +234,7 @@ export type GetPlayerResultsQueryVariables = Exact<{
 }>;
 
 
-export type GetPlayerResultsQuery = { __typename?: 'Query', getPlayer?: { __typename?: 'Player', username: string, stats: { __typename?: 'PlayerStats', level: number, experience: any, expToNextLevel?: any | null }, roster: Array<{ __typename?: 'Critter', id: string, name: string, baseStats: { __typename?: 'BaseStats', level: number, experience: any, expToNextLevel?: any | null } } | null> } | null };
+export type GetPlayerResultsQuery = { __typename?: 'Query', getPlayer?: { __typename?: 'Player', username?: string | null, stats: { __typename?: 'PlayerStats', level: number, experience: any, expToNextLevel?: any | null }, roster: Array<{ __typename?: 'Critter', id: string, name: string, baseStats: { __typename?: 'BaseStats', level: number, experience: any, expToNextLevel?: any | null } } | null> } | null };
 
 export type GetBattleHistoryQueryVariables = Exact<{
   id: Scalars['String']['input'];

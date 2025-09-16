@@ -11,6 +11,7 @@ import com.chronocritters.lib.model.domain.BaseStats;
 import com.chronocritters.lib.model.domain.Critter;
 import com.chronocritters.lib.model.domain.Player;
 import com.chronocritters.lib.model.domain.PlayerStats;
+import com.chronocritters.lib.model.domain.User;
 import com.chronocritters.lib.model.effects.DamageEffect;
 import com.chronocritters.lib.model.effects.DamageOverTimeEffect;
 import com.chronocritters.lib.model.effects.SkipTurnEffect;
@@ -20,17 +21,22 @@ import com.chronocritters.user.player.repository.AbilityRepository;
 import com.chronocritters.user.player.repository.CritterRepository;
 import com.chronocritters.user.player.repository.EffectRepository;
 import com.chronocritters.user.player.repository.PlayerRepository;
+import com.chronocritters.user.player.repository.UserRepository;
 
 @Configuration
 public class DatabaseSeeder {
     @Bean
-    public CommandLineRunner seedDatabase(AbilityRepository abilityRepository, CritterRepository critterRepository, PlayerRepository playerRepository, EffectRepository effectRepository) {
+    public CommandLineRunner seedDatabase(
+    AbilityRepository abilityRepository, CritterRepository critterRepository, 
+    PlayerRepository playerRepository, EffectRepository effectRepository, UserRepository userRepository
+    ) {
         return args -> {
             // Reset database state
             abilityRepository.deleteAll();
             critterRepository.deleteAll();
             playerRepository.deleteAll();
             effectRepository.deleteAll();
+            userRepository.deleteAll();
 
             // Effects
 
@@ -265,21 +271,35 @@ public class DatabaseSeeder {
             // Players
             Player blueOak = Player.builder()
                 .id("p1")
-                .username("BlueOak")
-                .password(PasswordUtil.hashPassword("password1"))
+                .userId("u1")
                 .stats(blueOakStats)
                 .roster(List.of(aquaLing, cogling, sylvanSentinel, strikon))
                 .build();
             Player redAsh = Player.builder()
                 .id("p2")
-                .username("RedAsh")
-                .password(PasswordUtil.hashPassword("password2"))
+                .userId("u2")
                 .stats(redAshStats)
                 .roster(List.of(voltHound, searfiend, miasmite))
                 .build();
 
+            User user1 = User.builder()
+                .id("u1")
+                .username("BlueOak")
+                .password(PasswordUtil.hashPassword("password1"))
+                .build();
+
+            User user2 = User.builder()
+                .id("u2")
+                .username("RedAsh")
+                .password(PasswordUtil.hashPassword("password2"))
+                .build();
+
             playerRepository.save(blueOak);
             playerRepository.save(redAsh);
+
+            userRepository.save(user1);
+            userRepository.save(user2);
+
         };
     }
 }
