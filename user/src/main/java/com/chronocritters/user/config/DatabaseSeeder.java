@@ -270,13 +270,13 @@ public class DatabaseSeeder {
 
             // Players
             Player blueOak = Player.builder()
-                .id("p1")
+                .id("u1")
                 .userId("u1")
                 .stats(blueOakStats)
                 .roster(List.of(aquaLing, cogling, sylvanSentinel, strikon))
                 .build();
             Player redAsh = Player.builder()
-                .id("p2")
+                .id("u2")
                 .userId("u2")
                 .stats(redAshStats)
                 .roster(List.of(voltHound, searfiend, miasmite))
